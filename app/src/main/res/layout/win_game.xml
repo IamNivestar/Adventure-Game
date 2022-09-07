@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/dungeon3"
     android:scaleType="centerCrop">
+
     <Button
         android:id="@+id/sound"
         style="@style/Widget.AppCompat.Button"
@@ -14,7 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@android:drawable/ic_lock_silent_mode_off"
-        android:onClick="play_song_win"
+        android:onClick="call_play_song_win"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

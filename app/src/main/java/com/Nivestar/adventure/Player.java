@@ -1,7 +1,5 @@
 package com.Nivestar.adventure;
 
-import android.widget.EditText;
-
 import org.json.JSONArray;
 
 import java.util.Random;
@@ -26,7 +24,7 @@ public class Player {
     private int player_energy_max;
     private int player_energy;
     private int player_dodge;
-    private int player_persuasion;
+    private int player_mind;
     private int player_critical;
     private int player_armor;
     private int player_resis_heat;
@@ -38,13 +36,14 @@ public class Player {
     private int player_dmg_poison;
     private int player_dmg_electric;
 
-    //demais status
     private String player_name;
     private String player_class;
     private int player_potion;
     private int player_xp;
     private int player_lvl;
     private int necessary_xp;
+
+    private int [] player_dmg_types_active = new int[5];
 
     static Random rand = new Random();
 
@@ -113,7 +112,7 @@ public class Player {
         generate_status( );
         this.player_critical = 0;
         this.player_potion = 2;
-        this.necessary_xp = 40;
+        this.necessary_xp = 5;
         this.player_name = name;
         this.player_lvl = 1;
         this.player_xp = 0;
@@ -143,23 +142,25 @@ public class Player {
     public void generate_status(){
         // depende do inventory
         boolean var_str_dmg = true; //por enquanto ele so ataca usando mao crua**
-
+        //(int)(Math.round(0.5*this.player_strength))
         this.player_armor = 0;
         if(var_str_dmg){
-            this.player_dmg_phy= this.player_dexterity + (int)(Math.round(0.5*this.player_strength));
+            this.player_dmg_phy= 2*this.player_dexterity + 2*this.player_strength - 30;
         }else{
-            this.player_dmg_phy= this.player_dexterity + 10;
+            this.player_dmg_phy= 2*this.player_dexterity - 10;
         }
-        this.player_hp_max = 10 * this.player_constitution;
+        if(this.player_dmg_phy < 0) this.player_dmg_phy = 0;
+
+        this.player_hp_max = 10 * this.player_constitution + 5 * this.player_vitality - 30;
         this.player_armor_penetration = this.player_cunning -10;
         this.player_energy_max = this.player_vitality - 6;
         this.player_dodge = this.player_lucky + 2*this.player_cunning -20;
-        this.player_persuasion = this.player_lucky + 2*this.player_cunning -20;
+        this.player_mind = this.player_lucky + 2*this.player_cunning -20;
         this.player_critical = this.player_lucky + 2*this.player_cunning -20;
-        this.player_resis_heat = 20 + this.player_constitution;
-        this.player_resis_cold = 20 + this.player_constitution;
-        this.player_resis_poison = 20 + this.player_constitution;
-        this.player_resis_eletric = 20 + this.player_constitution;;
+        this.player_resis_heat = this.player_constitution -10;
+        this.player_resis_cold = this.player_constitution -10;
+        this.player_resis_poison = this.player_constitution -10;
+        this.player_resis_eletric = this.player_constitution -10;
 
         if(this.player_magic > 10){
             this.player_dmg_heat = this.player_magic - 10; //adicionar verificador de valor nulo ao ler esse numero
@@ -210,12 +211,23 @@ public class Player {
         return attributes;
     }
 
+    //just visual
+    public void set_player_dmg_types(int [] player_dmg_types){
+        for (int i=0; i<5; i++){
+            this.player_dmg_types_active[i] = player_dmg_types[i];
+        }
+    }
+
+    public int [] get_player_dmg_types(){
+        return this.player_dmg_types_active;
+    }
+
     public boolean add_xp(int count){
         this.player_xp += count;
         if(this.player_xp >= this.necessary_xp) {
             this.player_xp = 0;
             this.player_lvl++;
-            this.necessary_xp = (int)(Math.round(this.necessary_xp * 1.2)); //20% de aumento de xp
+            this.necessary_xp = (int)(Math.round(this.necessary_xp * 1.2)) + 10; //20% + const de aumento de xp
             return true;
         }
         else{
@@ -247,24 +259,24 @@ public class Player {
                 this.player_lucky +=1;
                 break;
         }
+        generate_status();
+        this.player_hp = this.player_hp_max;
     }
 
     public int player_exhaustion(int dmg){
-        if( (this.player_energy - 1) < 0){
+        if( (this.player_energy) == 0){
             dmg = (int)(Math.round(dmg/2));
             return dmg;
         }else{
-            this.player_energy -=1;
             return dmg;
         }
     }
 
     public boolean player_att_dodge(int ene_dodge){
-        this.player_energy -= 1;
         int lucky = rand.nextInt(100);
         if(lucky < ene_dodge)
             return true;
-        else{
+        else {
             return false;
         }
     }
@@ -277,6 +289,9 @@ public class Player {
         if(ene_armor < 0)
             ene_armor = 0;
         dmg = Math.round(dmg*(100-ene_armor)/100);
+        if(dmg < 0){
+            dmg = 0;
+        }
         return dmg;
     }
     public int player_att_heat(int ene_resis){
@@ -284,6 +299,9 @@ public class Player {
         min = (int) (Math.round(this.player_dmg_heat * 0.8));
         dmg = rand.nextInt(this.player_dmg_heat - min + 1) + min;
         dmg = Math.round(dmg*(100-ene_resis)/100);
+        if(dmg < 0){
+            dmg = 0;
+        }
         return dmg;
     }
     public int player_att_cold(int ene_resis){
@@ -291,6 +309,9 @@ public class Player {
         min = (int) (Math.round(this.player_dmg_cold * 0.8));
         dmg = rand.nextInt(this.player_dmg_cold - min + 1) + min;
         dmg = Math.round(dmg*(100-ene_resis)/100);
+        if(dmg < 0){
+            dmg = 0;
+        }
         return dmg;
     }
     public int player_att_eletric(int ene_resis){
@@ -298,6 +319,9 @@ public class Player {
         min = (int) (Math.round(this.player_dmg_electric * 0.8));
         dmg = rand.nextInt(this.player_dmg_electric - min + 1) + min;
         dmg = Math.round(dmg*(100-ene_resis)/100);
+        if(dmg < 0){
+            dmg = 0;
+        }
         return dmg;
     }
     public int player_att_poison(int ene_resis){
@@ -305,12 +329,15 @@ public class Player {
         min = (int) (Math.round(this.player_dmg_poison * 0.8));
         dmg = rand.nextInt(this.player_dmg_poison - min + 1) + min;
         dmg = Math.round(dmg*(100-ene_resis)/100);
+        if(dmg < 0){
+            dmg = 0;
+        }
         return dmg;
     }
 
     public boolean critic(){
         int luck = rand.nextInt(100);
-        if( luck> (100-this.player_critical)) {
+        if( luck > (100-this.player_critical)) {
             return true;
         }else{
             return false;
@@ -336,7 +363,11 @@ public class Player {
 
     //g and s
     public int getPlayer_dodge() {
-        return player_dodge;
+        if(this.player_energy < 2){
+            return 0;
+        }else{
+            return player_dodge;
+        }
     }
 
     public int getPlayer_armor() {
@@ -459,8 +490,8 @@ public class Player {
         return player_energy_max;
     }
 
-    public int getPlayer_persuasion() {
-        return player_persuasion;
+    public int getPlayer_mind() {
+        return player_mind;
     }
 
     public int getPlayer_dmg_heat() {

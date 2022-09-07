@@ -11,16 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import android.content.DialogInterface;
-import android.util.Log;
-import android.widget.Toast;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 public class MainActivity extends AppCompatActivity {
 
     String TAG = "ACTIVITY ONE";
@@ -58,63 +48,65 @@ public class MainActivity extends AppCompatActivity {
         start_game();
     }
 
-    public void help(View view) {
+    public void how_to_play(View view) {
         click_sound();
-        setContentView(R.layout.help);
+        setContentView(R.layout.how_to_play);
         button_off();
         TextView text_about = (TextView) findViewById(R.id.about_game);
         String text = "You are an adventure responsible by explore the dungeon seeking to eliminate a dungeon boss!\n\n" +
                 "     How to play:\n" +
                 "        You can choose from 5 classes, each with its own point distribution\n" +
-                "        The level is unlimited, when you level up you'll receive an attribute point to distribute and 20% xp more is required to level up again\n" +
+                "        The level is unlimited, when you level up you'll receive an attribute point to distribute and more xp is required to level up again\n" +
                 "        The game automatically saves when you are out of combate\n"+
                 "        You can not carry more than 4 potions.\n" +
                 "        When you explore the dungeon, random events can occur, such as getting hurt in traps or encountering a random enemy!\n" +
-                "        Enemies appear based on your level\n" +
                 "        When you encounter an enemy, you can: fight, drink potions or try to escape.\n" +
                 "        All actions have their own chance of failing. Drinking potions during combat, for example, is a little more dangerous than drinking out of combat!\n" +
                 "        Storing potions can be a good idea, but you'll only find potions on exploration if don't have any.(you could be stolen too...)" +
                 "        Low-level enemies are less dangerous, but give less experience, so think hard before defining your strategy!\n" +
+                "        Enemy class depends on player level\n" +
+                "        Enemies receive a small random mutation in one of their attributes and are adapted in relation to the level generated.\n" +
                 "        Good luck!";
         text_about.setText(text);
     }
 
-    public void detalhes_help(View view) {
+    public void attributes_help(View view) {
         click_sound();
-        setContentView(R.layout.help);
+        setContentView(R.layout.how_to_play);
         button_off();
         TextView text_about = (TextView) findViewById(R.id.about_game);
-        String text = "@Atributos:\n Constituição: Determina a resistência do personagem no geral\n   " +
-            "aumenta moderadamente resistencia a todos os tipos de dano e bastante a saúde máxima\n" +
-            "Força: Determina a capacidade e efetividade do personagem para usar certos equipamentos \n   " +
-            "aumenta o dano de armas baseadas em força e do personagem desarmado e um pouco a penetração na armadura, requisito pra armas e armaduras.\n" +
-            "Destreza: Determina o quão habilidoso um personagem é com suas armas e ataques.\n    " +
-            "aumenta moderadamente o dano de todas os ataques, inclusive a efetividade da armadura fornecida por escudos (requisitado em algumas armas).\n" +
-            "Astúcia: Determina a esperteza do personagem para coagir outros personagens e de encontrar pontos fracos e padrões nos ataques inimigos.\n   " +
-            "aumenta a chance de esquiva, críticos e a persuasão.\n" +
-            "Magia: Determina a capacidade do personagem para manipular e usufruir de magia no geral.\n    " +
-            "aumenta o dano  dos feiticos, melhora a efetividade de encantamentos em itens e de poções.\n" +
-            "Vitalidade: Determina a energia total do personagem em combate antes de sofrer exaustão.\n     " +
-            "aumenta a quantidade de ataques possíveis reduzindo a velocidade da fadiga e um pouco a saúde máxima.\n" +
-            "Sorte: Determina a sorte no geral para encontrar objetos, persuadir e até se sair bem em combates.     " +
-            "aumenta a probabilidade de encontrar itens mais raros, aumenta a persuasao, aumenta um pouco a chance de críticos e de esquiva\n\n"+
+        String text = "@Attributes:\n Constitution: Determines the character's overall toughness\n" +
+            "moderately increases resistance to all types of damage and greatly increases max health\n" +
+            "Strength: Determines the character's ability and effectiveness to use certain equipment\n" +
+            "increases the damage of strength-based weapons and the unarmed character and slightly armor penetration, requirement for weapons and armor.\n" +
+            "Dexterity: Determines how skilled a character is with their weapons and attacks.\n    " +
+            "Moderately increases the damage of all attacks, including the effectiveness of armor provided by shields (required on some weapons).\n" +
+            "Cunning: Determines the character's cleverness to perform actions and find weaknesses in enemies.\n   " +
+            "increase dodge chance, critics and points in mind.\n" +
+            "Magic: Determines the character's ability to manipulate and enjoy magic in general.\n    " +
+            "increases spell damage, improves effectiveness of item enchantments and potions.\n" +
+            "Vitality: Determines the character's total energy in combat before suffering exhaustion.\n     " +
+            "increases the amount of possible attacks by reducing fatigue speed and slightly increases max health.\n" +
+            "Luck: Determines overall luck for finding objects, running away, and even doing well in combat." +
+            "increases the probability of finding rarer items, slightly increases the mind, the chance of crits and dodge\n\n"+
             "@Status:\n" +
-            "HP: Pontos de vida do personagem\n" +
-            "Energia: Número de ataques possíveis antes de entrar em estado de exaustão\n" +
-            "Dano: Dano total causado por ataque (já calculado velocidade do ataque)\n" +
-            "Penetração na Armadura: Porcentagem que ignora a armadura do inimigo\n" +
-            "Armadura: Porcentagem de reducao de dano fisico\n" +
-            "Esquiva: Probabilidade de esquivar de ataques\n" +
-            "Chance Critica: Probabiilidade de causar acerto crítico (causa dobro do dano)\n" +
-            "Persuasao: Probabilidade de conseguir persuadir\n" +
-            "Resis a fria: Porcentagem de reducao de dano por frio\n" +
-            "Resis ao calor: Porcentagem de reducao de dano de calor\n" +
-            "Resis ao veneno: Porcentagem de reducao de dano por veneno\n" +
-            "Resis a eletricidade: Porcentagem de reducao de dano  eletrico\n" +
-            "Dano por fria: Dano por frio máximo causado no ataque\n" +
-            "Dano por calor: Dano por  calor máximo causado no ataque\n" +
-            "Dano por veneno: Dano por veneno máximo causado no ataque\n" +
-            "Dano eletrico: Dano eletrico máximo causado no ataque\n";
+            "HP: Character hit points\n" +
+            "Energy: Number of attacks possible (magic consumes 2 points) before going into exhaustion state, is restored out of combat." +
+            "(Exhaustion: does not allow magic attacks and dodges, it is possible to recover only one energy point after a turn of exhaustion)\n" +
+            "Damage: Total damage dealt per attack\n" +
+            "Armor Penetration: Percentage that ignores enemy armor\n" +
+            "Armor: Percentage of physical damage reduction\n" +
+            "Dodge: Probability of dodging attacks\n" +
+            "Critical Chance: Probability to deal critical hit (150% of damage)\n" +
+            "Mind: Value compared to that of the enemy to indicate the ability to read the enemy and successfully execute actions during combat\n" +
+            "Cold Resistance: Percentage of cold damage reduction\n" +
+            "Heat Resistance: Heat damage reduction percentage\n" +
+            "Poison Resistance: Poison damage reduction percentage\n" +
+            "Electrical Resistance: Percentage of electrical damage reduction\n" +
+            "Cold Damage: Maximum cold damage dealt on attack\n" +
+            "Heat Damage: Maximum heat damage dealt on attack\n" +
+            "Poison Damage: Maximum poison damage dealt on attack\n" +
+            "Electric damage: Maximum electric damage dealt on attack\n";
         text_about.setText(text);
     }
 
@@ -234,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void set_enable_song(){
-        if(enable_song == true){
+        if(enable_song){
             enable_song= false;
             button_off();
         }else{
@@ -244,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void button_off(){
-        if(enable_song == false){
+        if(!enable_song){
             Button b = findViewById(R.id.sound);
             b.setBackgroundResource(android.R.drawable.ic_lock_silent_mode);
         }
@@ -272,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        if(enable_song==true){
+        if(enable_song){
             play_song(null);
         }
     }

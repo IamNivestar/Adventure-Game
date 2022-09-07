@@ -14,7 +14,7 @@
         android:layout_height="39dp"
         android:layout_marginTop="8dp"
         android:background="@android:drawable/ic_lock_silent_mode_off"
-        android:onClick="play_song_ambient"
+        android:onClick="call_play_song_ambient"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.761"
