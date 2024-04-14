@@ -150,9 +150,9 @@ public class Enemy {
                 this.enemy_name = "Baby Dragon";
                 break;
             case 6:
-                set_drop_spawn_xp(10, 100, 8);
+                set_drop_spawn_xp(8, 100, 8);
                 set_ap_e_d_m_c(0,4,15,3,10);
-                set_resis_a_he_co_po_el(95,0,0,100, -20);
+                set_resis_a_he_co_po_el(75,0,0,100, -20);
                 set_dmg_phy_he_co_po_el(0,0,0,15, 0);
                 this.enemy_hp = rand.nextInt(10 - 5 + 1) + 5;
                 this.enemy_name = "Poisonous Slime";

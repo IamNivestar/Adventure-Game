@@ -14,7 +14,7 @@
         <entry key="..\:/Users/Amaury/Documents/adventure android/Adventure/app/src/main/res/layout/help.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Amaury/Documents/adventure android/Adventure/app/src/main/res/layout/help_class.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Amaury/Documents/adventure android/Adventure/app/src/main/res/layout/how_to_play.xml" value="0.1234375" />
-        <entry key="..\:/Users/Amaury/Documents/adventure android/Adventure/app/src/main/res/layout/levelup.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Amaury/Documents/adventure android/Adventure/app/src/main/res/layout/levelup.xml" value="0.19572649572649573" />
         <entry key="..\:/Users/Amaury/Documents/adventure android/Adventure/app/src/main/res/layout/menu.xml" value="0.2" />
         <entry key="..\:/Users/Amaury/Documents/adventure android/Adventure/app/src/main/res/layout/out_combat.xml" value="0.4" />
         <entry key="..\:/Users/Amaury/Documents/adventure android/Adventure/app/src/main/res/layout/select_name.xml" value="0.25416666666666665" />
@@ -26,7 +26,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
